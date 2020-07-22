@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">test carsales</string>
+    <string name="app_name">test_carsales</string>
+    <string name="pick_a_date">Seleccione una fecha</string>
+    <string name="date">Fecha:</string>
+    <string name="confirmed_cases">Casos confirmados:</string>
+    <string name="deaths">Cantidad de personas fallecidas:</string>
 </resources>
