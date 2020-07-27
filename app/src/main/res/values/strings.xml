@@ -4,4 +4,5 @@
     <string name="date">Fecha:</string>
     <string name="confirmed_cases">Casos confirmados:</string>
     <string name="deaths">Cantidad de personas fallecidas:</string>
+    <string name="data_error">Ha ocurrido un error, favor intenta nuevamente.</string>
 </resources>

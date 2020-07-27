@@ -4,13 +4,8 @@
     <data>
 
         <variable
-            name="covid"
-            type="cl.maleb.testcarsales.data.Covid" />
-
-        <variable
             name="viewModel"
             type="cl.maleb.testcarsales.ui.covid.CovidViewModel" />
-
     </data>
 
     <RelativeLayout
@@ -21,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="@{viewModel.isShowProgress()}" />
+            android:visibility="@{viewModel.setVisibility(viewModel.isShowProgress())}" />
 
         <LinearLayout
             android:id="@+id/contentLinear"
@@ -30,15 +25,12 @@
             android:layout_centerInParent="true"
             android:orientation="vertical"
             android:padding="@dimen/padding_default"
-            android:visibility="@{viewModel.isShowContent()}">
+            android:visibility="@{viewModel.setVisibility(viewModel.isShowContent())}">
 
             <TextView
                 android:id="@+id/tvDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{@string/date + ' ' + covid.date}"
-                android:textAlignment="center"
-                android:textSize="24sp" />
+                style="@style/textHeader"
+                android:text="@{@string/date + ' ' + viewModel.date}" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,19 +40,13 @@
 
                 <TextView
                     android:id="@+id/tvConfirmedCases"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/confirmed_cases + ' ' + String.valueOf(covid.confirmed)}"
-                    android:textAlignment="textStart"
-                    android:textSize="18sp" />
+                    style="@style/textContent"
+                    android:text="@{@string/confirmed_cases + ' ' + String.valueOf(viewModel.confirmed_cases)}" />
 
                 <TextView
                     android:id="@+id/tvPassedAway"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/deaths + ' ' + String.valueOf(covid.deaths)}"
-                    android:textAlignment="textStart"
-                    android:textSize="18sp" />
+                    style="@style/textContent"
+                    android:text="@{@string/deaths + ' ' + String.valueOf(viewModel.deaths) }" />
 
             </LinearLayout>
 
