@@ -17,13 +17,19 @@ class CovidViewModel @Inject constructor(private val covidRepository: CovidRepos
     var isShowProgress = MutableLiveData<Boolean>().apply { value = false }
     var isShowContent = MutableLiveData<Boolean>().apply { value = false }
 
-    var confirmed_cases = MutableLiveData<Int>().apply { value = 0 }
+    var confirmedCases = MutableLiveData<Int>().apply { value = 0 }
     var deaths = MutableLiveData<Int>().apply { value = 0 }
+    var selectedDate = MutableLiveData<String>().apply { value = "" }
 
     val covid by lazy { covidRepository.getCovidData(Date) }
 
     fun loadCovid(): LiveData<Result<Covid>> {
         return covidRepository.getCovidData(Date)
+    }
+
+    fun fetchDate(dateString: String) {
+        Date = dateString
+        covidRepository.getCovidData(Date)
     }
 
     fun setVisibility(boolean: Boolean): Int {

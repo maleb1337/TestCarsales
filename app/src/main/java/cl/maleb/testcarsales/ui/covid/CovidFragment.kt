@@ -1,10 +1,10 @@
 package cl.maleb.testcarsales.ui.covid
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +15,7 @@ import cl.maleb.testcarsales.di.Injectable
 import cl.maleb.testcarsales.di.injectViewModel
 import cl.maleb.testcarsales.utils.datePickerDialog
 import cl.maleb.testcarsales.utils.getCurrentDay
+import cl.maleb.testcarsales.utils.parseDateFromCalendar
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
@@ -37,18 +38,38 @@ class CovidFragment : Fragment(), Injectable {
         binding = CovidLayoutBinding.inflate(inflater, container, false)
         binding.btnDateSelection.setOnClickListener {
             // dialog
-            /*
-            I'm having a problem with this, every time the user clicks and this event triggers set my var equals to "".
-             Before it turned out to only perform the return of string when the user actually clicks a day on the calendar...
-            */
 
-            var dateSelection = datePickerDialog(requireContext())
-//            var dateSelection = "2020-07-12" // Just for testing
-
-            if (dateSelection.isNotEmpty()) {
-                viewModel.Date = dateSelection
-                viewModel.loadCovid()
-            }
+            datePickerDialog(requireContext(),
+                DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
+                    viewModel.Date =
+                        parseDateFromCalendar(day, month + 1, year)
+                    /*
+                        Here is my doubt, I'll still do another observer because, I couldn't find another way.
+                        Iván sent me a guide project and that project also has two observers in the Fragment...
+                        Link: https://github.com/amaljofy/NewsList-Part-1
+                    */
+                    viewModel.loadCovid().observe(viewLifecycleOwner, Observer {
+                        when (it.status) {
+                            Result.Status.SUCCESS -> {
+                                viewModel.isShowProgress.value = false
+                                viewModel.isShowContent.value = true
+                                viewModel.selectedDate.value = it.data?.date
+                                viewModel.confirmedCases.value = it.data?.confirmed
+                                viewModel.deaths.value = it.data?.deaths
+                            }
+                            Result.Status.ERROR -> {
+                                viewModel.isShowProgress.value = false
+                                viewModel.isShowContent.value = false
+                                showSnackBar()
+                            }
+                            Result.Status.LOADING -> {
+                                viewModel.isShowProgress.value = true
+                                viewModel.isShowContent.value = false
+                            }
+                        }
+                    })
+                }
+            )
         }
 
         binding.lifecycleOwner = viewLifecycleOwner
@@ -67,7 +88,8 @@ class CovidFragment : Fragment(), Injectable {
                 Result.Status.SUCCESS -> {
                     viewModel.isShowProgress.value = false
                     viewModel.isShowContent.value = true
-                    viewModel.confirmed_cases.value = it.data?.confirmed
+                    viewModel.selectedDate.value = it.data?.date
+                    viewModel.confirmedCases.value = it.data?.confirmed
                     viewModel.deaths.value = it.data?.deaths
                 }
                 Result.Status.ERROR -> {
