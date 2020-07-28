@@ -11,9 +11,34 @@ val year = c.get(Calendar.YEAR)
 val month = c.get(Calendar.MONTH)
 val day = c.get(Calendar.DAY_OF_MONTH)
 
-fun getCurrentDay(): String {
+fun initDate(): String {
+    // method that helps to do the first API call. Returns the current date minus one day.
     var date = ""
     val currentDay = day - 1
+    val currentMonth = month + 1
+    val currentYear = year
+
+    if (currentDay < 10) {
+        if (currentMonth < 10) {
+            date = "$currentYear-0$currentMonth-0$currentDay"
+        } else {
+            date = "$currentYear-$currentMonth-0$currentDay"
+        }
+
+    } else {
+        if (currentMonth < 10) {
+            date = "$currentYear-0$currentMonth-$currentDay"
+        } else {
+            date = "$currentYear-$currentMonth-$currentDay"
+        }
+    }
+
+    return date
+}
+
+fun getCurrentDay(): String {
+    var date = ""
+    val currentDay = day
     val currentMonth = month + 1
     val currentYear = year
 

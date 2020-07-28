@@ -14,7 +14,7 @@ import cl.maleb.testcarsales.databinding.CovidLayoutBinding
 import cl.maleb.testcarsales.di.Injectable
 import cl.maleb.testcarsales.di.injectViewModel
 import cl.maleb.testcarsales.utils.datePickerDialog
-import cl.maleb.testcarsales.utils.getCurrentDay
+import cl.maleb.testcarsales.utils.initDate
 import cl.maleb.testcarsales.utils.parseDateFromCalendar
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
@@ -38,36 +38,9 @@ class CovidFragment : Fragment(), Injectable {
         binding = CovidLayoutBinding.inflate(inflater, container, false)
         binding.btnDateSelection.setOnClickListener {
             // dialog
-
             datePickerDialog(requireContext(),
                 DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
-                    viewModel.Date =
-                        parseDateFromCalendar(day, month + 1, year)
-                    /*
-                        Here is my doubt, I'll still do another observer because, I couldn't find another way.
-                        Iván sent me a guide project and that project also has two observers in the Fragment...
-                        Link: https://github.com/amaljofy/NewsList-Part-1
-                    */
-                    viewModel.loadCovid().observe(viewLifecycleOwner, Observer {
-                        when (it.status) {
-                            Result.Status.SUCCESS -> {
-                                viewModel.isShowProgress.value = false
-                                viewModel.isShowContent.value = true
-                                viewModel.selectedDate.value = it.data?.date
-                                viewModel.confirmedCases.value = it.data?.confirmed
-                                viewModel.deaths.value = it.data?.deaths
-                            }
-                            Result.Status.ERROR -> {
-                                viewModel.isShowProgress.value = false
-                                viewModel.isShowContent.value = false
-                                showSnackBar()
-                            }
-                            Result.Status.LOADING -> {
-                                viewModel.isShowProgress.value = true
-                                viewModel.isShowContent.value = false
-                            }
-                        }
-                    })
+                    viewModel.fetchDate(parseDateFromCalendar(day, month + 1, year))
                 }
             )
         }
@@ -77,33 +50,39 @@ class CovidFragment : Fragment(), Injectable {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewModel = viewModel
-        viewModel.Date = getCurrentDay()
+        viewModel.fetchDate(initDate())
 
-        viewModel.loadCovid().observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Result.Status.SUCCESS -> {
-                    viewModel.isShowProgress.value = false
-                    viewModel.isShowContent.value = true
-                    viewModel.selectedDate.value = it.data?.date
-                    viewModel.confirmedCases.value = it.data?.confirmed
-                    viewModel.deaths.value = it.data?.deaths
-                }
-                Result.Status.ERROR -> {
-                    viewModel.isShowProgress.value = false
-                    viewModel.isShowContent.value = false
-                    showSnackBar()
-                }
-                Result.Status.LOADING -> {
-                    viewModel.isShowProgress.value = true
-                    viewModel.isShowContent.value = false
-                }
-            }
-        })
+        viewModelObserver()
 
+    }
+
+    private fun viewModelObserver(){
+        viewModel.covidLiveData
+            .observe(viewLifecycleOwner, Observer {
+                when (it.status) {
+                    Result.Status.SUCCESS -> {
+                        viewModel.isShowProgress.value = false
+                        viewModel.isShowContent.value = true
+                        viewModel.selectedDate.value = it.data?.date
+                        viewModel.confirmedCases.value = it.data?.confirmed
+                        viewModel.deaths.value = it.data?.deaths
+                    }
+                    Result.Status.ERROR -> {
+                        viewModel.isShowProgress.value = false
+                        viewModel.isShowContent.value = false
+                        showSnackBar()
+                    }
+                    Result.Status.LOADING -> {
+                        viewModel.isShowProgress.value = true
+                        viewModel.isShowContent.value = false
+                    }
+                }
+            })
     }
 
     private fun showSnackBar() {
