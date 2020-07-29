@@ -2,7 +2,10 @@ package cl.maleb.testcarsales.utils
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.widget.Toast
+import android.os.Build
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 // Calendar variables
@@ -13,51 +16,40 @@ val day = c.get(Calendar.DAY_OF_MONTH)
 
 fun initDate(): String {
     // method that helps to do the first API call. Returns the current date minus one day.
-    var date = ""
     val currentDay = day - 1
-    val currentMonth = month + 1
+    val currentMonth = month
     val currentYear = year
+    var dateString = ""
 
-    if (currentDay < 10) {
-        if (currentMonth < 10) {
-            date = "$currentYear-0$currentMonth-0$currentDay"
-        } else {
-            date = "$currentYear-$currentMonth-0$currentDay"
-        }
 
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val current = LocalDateTime.now().minusDays(1)
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        dateString = current.format(formatter)
     } else {
-        if (currentMonth < 10) {
-            date = "$currentYear-0$currentMonth-$currentDay"
-        } else {
-            date = "$currentYear-$currentMonth-$currentDay"
-        }
+        val date = Date(currentYear, currentMonth, currentDay)
+        val formatter = SimpleDateFormat("yyyy-MM-dd")
+        dateString = formatter.format(date)
     }
 
-    return date
+    return dateString
 }
 
 fun getCurrentDay(): String {
-    var date = ""
-    val currentDay = day
-    val currentMonth = month + 1
-    val currentYear = year
+    var dateString = ""
 
-    if (currentDay < 10) {
-        if (currentMonth < 10) {
-            date = "$currentYear-0$currentMonth-0$currentDay"
-        } else {
-            date = "$currentYear-$currentMonth-0$currentDay"
-        }
-
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        dateString = current.format(formatter)
     } else {
-        if (currentMonth < 10) {
-            date = "$currentYear-0$currentMonth-$currentDay"
-        } else {
-            date = "$currentYear-$currentMonth-$currentDay"
-        }
+        val date = Date()
+        val formatter = SimpleDateFormat("yyyy-MM-dd")
+        dateString = formatter.format(date)
     }
 
-    return date
+
+    return dateString
 }
 
 fun parseDateFromCalendar(dayOfMonth: Int, monthOfYear: Int, year: Int): String {
@@ -81,7 +73,6 @@ fun parseDateFromCalendar(dayOfMonth: Int, monthOfYear: Int, year: Int): String 
 }
 
 fun datePickerDialog(context: Context, listener: DatePickerDialog.OnDateSetListener) {
-    var dateString = ""
     val dpd = DatePickerDialog(
         context,
         listener,

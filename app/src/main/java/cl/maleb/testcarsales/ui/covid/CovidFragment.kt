@@ -14,6 +14,7 @@ import cl.maleb.testcarsales.databinding.CovidLayoutBinding
 import cl.maleb.testcarsales.di.Injectable
 import cl.maleb.testcarsales.di.injectViewModel
 import cl.maleb.testcarsales.utils.datePickerDialog
+import cl.maleb.testcarsales.utils.getCurrentDay
 import cl.maleb.testcarsales.utils.initDate
 import cl.maleb.testcarsales.utils.parseDateFromCalendar
 import com.google.android.material.snackbar.Snackbar
@@ -40,7 +41,8 @@ class CovidFragment : Fragment(), Injectable {
             // dialog
             datePickerDialog(requireContext(),
                 DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
-                    viewModel.fetchDate(parseDateFromCalendar(day, month + 1, year))
+                    val dateSelected = parseDateFromCalendar(day, month, year)
+                    viewModel.fetchDate(dateSelected)
                 }
             )
         }
@@ -61,7 +63,7 @@ class CovidFragment : Fragment(), Injectable {
 
     }
 
-    private fun viewModelObserver(){
+    private fun viewModelObserver() {
         viewModel.covidLiveData
             .observe(viewLifecycleOwner, Observer {
                 when (it.status) {
