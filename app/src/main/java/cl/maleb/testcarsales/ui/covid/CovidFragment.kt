@@ -13,48 +13,34 @@ import cl.maleb.testcarsales.data.Result
 import cl.maleb.testcarsales.databinding.CovidLayoutBinding
 import cl.maleb.testcarsales.di.Injectable
 import cl.maleb.testcarsales.di.injectViewModel
-import cl.maleb.testcarsales.utils.datePickerDialog
-import cl.maleb.testcarsales.utils.getCurrentDay
+import cl.maleb.testcarsales.utils.showDatePickerDialog
 import cl.maleb.testcarsales.utils.initDate
 import cl.maleb.testcarsales.utils.parseDateFromCalendar
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-class CovidFragment : Fragment(), Injectable {
+class CovidFragment : Fragment(R.layout.covid_layout), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: CovidViewModel
     private lateinit var binding: CovidLayoutBinding
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
         viewModel = injectViewModel(viewModelFactory)
-
-        // inflate layout
-        binding = CovidLayoutBinding.inflate(inflater, container, false)
+        binding = CovidLayoutBinding.bind(view)
         binding.btnDateSelection.setOnClickListener {
             // dialog
-            datePickerDialog(requireContext(),
+            showDatePickerDialog(requireContext(),
                 DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
                     val dateSelected = parseDateFromCalendar(day, month, year)
                     viewModel.fetchDate(dateSelected)
                 }
             )
         }
-
         binding.lifecycleOwner = viewLifecycleOwner
-
-        return binding.root
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         binding.viewModel = viewModel
         viewModel.fetchDate(initDate())
