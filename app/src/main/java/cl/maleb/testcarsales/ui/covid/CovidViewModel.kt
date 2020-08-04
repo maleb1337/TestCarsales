@@ -35,7 +35,7 @@ class CovidViewModel @Inject constructor(private val covidRepository: CovidRepos
 
     fun errorState() {
         isShowProgress.value = false
-        isShowContent.value = false
+        isShowContent.value = true
     }
 
     fun emptyState() {
