@@ -35,7 +35,7 @@ class CovidFragment : Fragment(R.layout.covid_layout), Injectable {
             // dialog
             showDatePickerDialog(requireContext(),
                 DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
-                    val dateSelected = parseDateFromCalendar(day, month, year)
+                    val dateSelected = parseDateFromCalendar(day, month + 1, year)
                     viewModel.fetchDate(dateSelected)
                 }
             )
