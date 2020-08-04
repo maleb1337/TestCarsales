@@ -34,7 +34,7 @@ class CovidFragment : Fragment(R.layout.covid_layout), Injectable {
             // dialog
             showDatePickerDialog(requireContext(),
                 DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
-                    val dateSelected = parseDateFromCalendar(day, month + 1, year)
+                    val dateSelected = parseDateFromCalendar(day, month, year)
                     viewModel.fetchDate(dateSelected)
                 }
             )
@@ -53,7 +53,7 @@ class CovidFragment : Fragment(R.layout.covid_layout), Injectable {
             .observe(viewLifecycleOwner, Observer {
                 when (it.status) {
                     Result.Status.SUCCESS -> {
-                        viewModel.successState(it.data?.date, it.data?.confirmed, it.data?.deaths)
+                        viewModel.successState(it.data)
                     }
                     Result.Status.ERROR -> {
                         viewModel.errorState()

@@ -14,6 +14,9 @@ val year = c.get(Calendar.YEAR)
 val month = c.get(Calendar.MONTH)
 val day = c.get(Calendar.DAY_OF_MONTH)
 
+val pattern = "yyyy-MM-dd"
+val formatter = SimpleDateFormat(pattern)
+
 fun initDate(): String {
     // method that helps to do the first API call. Returns the current date minus one day.
     val currentDay = day - 1
@@ -24,52 +27,25 @@ fun initDate(): String {
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val current = LocalDateTime.now().minusDays(1)
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val formatter = DateTimeFormatter.ofPattern(pattern)
         dateString = current.format(formatter)
     } else {
         val date = Date(currentYear, currentMonth, currentDay)
-        val formatter = SimpleDateFormat("yyyy-MM-dd")
         dateString = formatter.format(date)
     }
 
     return dateString
 }
 
-fun getCurrentDay(): String {
-    var dateString = ""
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        dateString = current.format(formatter)
-    } else {
-        val date = Date()
-        val formatter = SimpleDateFormat("yyyy-MM-dd")
-        dateString = formatter.format(date)
-    }
-
-
-    return dateString
-}
 
 fun parseDateFromCalendar(dayOfMonth: Int, monthOfYear: Int, year: Int): String {
-    var date = ""
-    if (dayOfMonth < 10) {
-        if (monthOfYear < 10) {
-            date = "$year-0$monthOfYear-0$dayOfMonth"
-        } else {
-            date = "$year-$monthOfYear-0$dayOfMonth"
-        }
+    var dateString = ""
+    val calendar = Calendar.getInstance()
+    calendar.set(year, monthOfYear, dayOfMonth)
 
-    } else {
-        if (monthOfYear < 10) {
-            date = "$year-0$monthOfYear-$dayOfMonth"
-        } else {
-            date = "$year-$monthOfYear-$dayOfMonth"
-        }
-    }
+    dateString = formatter.format(calendar.time)
 
-    return date
+    return dateString
 }
 
 fun showDatePickerDialog(context: Context, listener: DatePickerDialog.OnDateSetListener) {

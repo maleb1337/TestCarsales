@@ -30,7 +30,7 @@
             <TextView
                 android:id="@+id/tvDate"
                 style="@style/textHeader"
-                android:text="@{@string/date + ' ' + viewModel.selectedDate}" />
+                android:text="@{@string/date + ' ' + viewModel.covidData.date}" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -41,12 +41,12 @@
                 <TextView
                     android:id="@+id/tvConfirmedCases"
                     style="@style/textContent"
-                    android:text="@{@string/confirmed_cases + ' ' + String.valueOf(viewModel.confirmedCases)}" />
+                    android:text="@{@string/confirmed_cases + ' ' + String.valueOf(viewModel.covidData.confirmed)}" />
 
                 <TextView
                     android:id="@+id/tvPassedAway"
                     style="@style/textContent"
-                    android:text="@{@string/deaths + ' ' + String.valueOf(viewModel.deaths) }" />
+                    android:text="@{@string/deaths + ' ' + String.valueOf(viewModel.covidData.deaths) }" />
 
             </LinearLayout>
 
