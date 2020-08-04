@@ -1,6 +1,5 @@
 package cl.maleb.testcarsales.ui.covid
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -43,12 +42,6 @@ class CovidViewModel @Inject constructor(private val covidRepository: CovidRepos
         dateLiveData.value = dateString
     }
 
-    fun setVisibility(boolean: Boolean): Int {
-        return when (boolean) {
-            true -> View.VISIBLE
-            false -> View.GONE
-        }
-    }
 
     // Every time that dateLiveData has another value, it calls the API.
     var covidLiveData: LiveData<Result<Covid>> = Transformations
