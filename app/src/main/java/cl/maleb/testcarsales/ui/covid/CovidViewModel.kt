@@ -20,6 +20,28 @@ class CovidViewModel @Inject constructor(private val covidRepository: CovidRepos
     var deaths = MutableLiveData<Int>().apply { value = 0 }
     var selectedDate = MutableLiveData<String>().apply { value = "" }
 
+    fun loadingState() {
+        isShowProgress.value = true
+        isShowContent.value = false
+    }
+
+    fun successState(dateValue: String?, confirmedValue: Int?, deathsValue: Int?) {
+        isShowProgress.value = false
+        isShowContent.value = true
+        selectedDate.value = dateValue
+        confirmedCases.value = confirmedValue
+        deaths.value = deathsValue
+    }
+
+    fun errorState() {
+        isShowProgress.value = false
+        isShowContent.value = false
+    }
+
+    fun emptyState() {
+        isShowProgress.value = false
+        isShowContent.value = true
+    }
 
     fun fetchDate(dateString: String) {
         dateLiveData.value = dateString

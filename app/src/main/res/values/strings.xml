@@ -5,4 +5,5 @@
     <string name="confirmed_cases">Casos confirmados:</string>
     <string name="deaths">Cantidad de personas fallecidas:</string>
     <string name="data_error">Ha ocurrido un error, favor intenta nuevamente.</string>
+    <string name="empty_data">No hay información disponible a la fecha consultada.</string>
 </resources>

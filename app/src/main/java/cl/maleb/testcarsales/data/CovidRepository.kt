@@ -17,14 +17,20 @@ class CovidRepository @Inject constructor(private val service: AppService) : Api
             val result = request {
                 service.getCovidData(Date)
             }
-            when (result.status) {
-                Result.Status.SUCCESS -> {
-                    emit(Result.success(result.data!!.data!!))
-                }
-                Result.Status.ERROR -> {
-                    emit(Result.error(result.data!!.message!!))
+
+            if (result.data == null) {
+                emit(Result.empty())
+            } else {
+                when (result.status) {
+                    Result.Status.SUCCESS -> {
+                        emit(Result.success(result.data.data))
+                    }
+                    Result.Status.ERROR -> {
+                        emit(Result.error(result.data.message))
+                    }
                 }
             }
+
 
         }
 

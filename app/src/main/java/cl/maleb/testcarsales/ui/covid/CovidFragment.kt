@@ -2,9 +2,8 @@ package cl.maleb.testcarsales.ui.covid
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -13,9 +12,9 @@ import cl.maleb.testcarsales.data.Result
 import cl.maleb.testcarsales.databinding.CovidLayoutBinding
 import cl.maleb.testcarsales.di.Injectable
 import cl.maleb.testcarsales.di.injectViewModel
-import cl.maleb.testcarsales.utils.showDatePickerDialog
 import cl.maleb.testcarsales.utils.initDate
 import cl.maleb.testcarsales.utils.parseDateFromCalendar
+import cl.maleb.testcarsales.utils.showDatePickerDialog
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
@@ -54,20 +53,19 @@ class CovidFragment : Fragment(R.layout.covid_layout), Injectable {
             .observe(viewLifecycleOwner, Observer {
                 when (it.status) {
                     Result.Status.SUCCESS -> {
-                        viewModel.isShowProgress.value = false
-                        viewModel.isShowContent.value = true
-                        viewModel.selectedDate.value = it.data?.date
-                        viewModel.confirmedCases.value = it.data?.confirmed
-                        viewModel.deaths.value = it.data?.deaths
+                        viewModel.successState(it.data?.date, it.data?.confirmed, it.data?.deaths)
                     }
                     Result.Status.ERROR -> {
-                        viewModel.isShowProgress.value = false
-                        viewModel.isShowContent.value = false
+                        viewModel.errorState()
                         showSnackBar()
                     }
                     Result.Status.LOADING -> {
-                        viewModel.isShowProgress.value = true
-                        viewModel.isShowContent.value = false
+                        viewModel.loadingState()
+                    }
+                    Result.Status.EMPTY -> {
+                        viewModel.emptyState()
+                        Toast.makeText(requireContext(), R.string.empty_data, Toast.LENGTH_LONG)
+                            .show()
                     }
                 }
             })
