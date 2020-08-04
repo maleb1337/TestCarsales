@@ -37,7 +37,6 @@ fun initDate(): String {
     return dateString
 }
 
-
 fun parseDateFromCalendar(dayOfMonth: Int, monthOfYear: Int, year: Int): String {
     var dateString = ""
     val calendar = Calendar.getInstance()
@@ -48,9 +47,9 @@ fun parseDateFromCalendar(dayOfMonth: Int, monthOfYear: Int, year: Int): String 
     return dateString
 }
 
-fun showDatePickerDialog(context: Context, listener: DatePickerDialog.OnDateSetListener) {
+fun Context.showDatePickerDialog(listener: DatePickerDialog.OnDateSetListener) {
     val dpd = DatePickerDialog(
-        context,
+        this,
         listener,
         year,
         month,
@@ -58,5 +57,4 @@ fun showDatePickerDialog(context: Context, listener: DatePickerDialog.OnDateSetL
     )
 
     dpd.show()
-
 }
