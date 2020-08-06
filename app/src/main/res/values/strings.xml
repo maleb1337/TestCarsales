@@ -6,4 +6,8 @@
     <string name="deaths">Cantidad de personas fallecidas:</string>
     <string name="data_error">Ha ocurrido un error, favor intenta nuevamente.</string>
     <string name="empty_data">No hay información disponible a la fecha consultada.</string>
+    <string name="generic_error_title">Ha ocurrido un error</string>
+    <string name="generic_no_connection_message">Estás desconectado. Comprueba tu conexión.</string>
+    <string name="settings_text">Ajustes</string>
+    <string name="try_again_text">Intentar de nuevo</string>
 </resources>

@@ -1,11 +1,9 @@
 package cl.maleb.testcarsales.ui.covid
 
 import android.app.DatePickerDialog
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -17,6 +15,7 @@ import cl.maleb.testcarsales.databinding.CovidLayoutBinding
 import cl.maleb.testcarsales.di.Injectable
 import cl.maleb.testcarsales.di.injectViewModel
 import cl.maleb.testcarsales.utils.initDate
+import cl.maleb.testcarsales.utils.isNetworkAvailable
 import cl.maleb.testcarsales.utils.parseDateFromCalendar
 import cl.maleb.testcarsales.utils.showDatePickerDialog
 import com.google.android.material.snackbar.Snackbar
@@ -45,6 +44,13 @@ class CovidFragment : Fragment(R.layout.covid_layout), Injectable {
                 }
             )
         }
+        binding.btnSettings.setOnClickListener {
+            val intent = Intent(Settings.ACTION_SETTINGS)
+            context?.startActivity(intent)
+        }
+        binding.btnTryAgain.setOnClickListener {
+            viewModel.fetchDate(initDate())
+        }
         binding.lifecycleOwner = viewLifecycleOwner
 
         binding.viewModel = viewModel
@@ -64,6 +70,7 @@ class CovidFragment : Fragment(R.layout.covid_layout), Injectable {
                     }
                     Result.Status.ERROR -> {
                         viewModel.errorState()
+                        viewModel.isConnected(isNetworkAvailable(context))
                         showSnackBar()
                     }
                     Result.Status.LOADING -> {
@@ -71,14 +78,18 @@ class CovidFragment : Fragment(R.layout.covid_layout), Injectable {
                     }
                     Result.Status.EMPTY -> {
                         viewModel.emptyState()
+                        viewModel.isConnected(isNetworkAvailable(context))
                         myToast = Toast.makeText(
                             requireContext(),
                             R.string.empty_data,
                             Toast.LENGTH_SHORT
                         )
                         myToast.show()
+
                     }
                 }
+
+
             })
     }
 
@@ -92,6 +103,7 @@ class CovidFragment : Fragment(R.layout.covid_layout), Injectable {
         // I'd add an action to perform reload data
         snack.show()
     }
+
 
     override fun onPause() {
         super.onPause()
