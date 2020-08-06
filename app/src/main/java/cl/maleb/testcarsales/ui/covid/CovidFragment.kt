@@ -1,7 +1,11 @@
 package cl.maleb.testcarsales.ui.covid
 
 import android.app.DatePickerDialog
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -24,6 +28,8 @@ class CovidFragment : Fragment(R.layout.covid_layout), Injectable {
 
     private lateinit var viewModel: CovidViewModel
     private lateinit var binding: CovidLayoutBinding
+
+    private lateinit var myToast: Toast
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,6 +54,7 @@ class CovidFragment : Fragment(R.layout.covid_layout), Injectable {
 
     }
 
+
     private fun viewModelObserver() {
         viewModel.covidLiveData
             .observe(viewLifecycleOwner, Observer {
@@ -64,8 +71,12 @@ class CovidFragment : Fragment(R.layout.covid_layout), Injectable {
                     }
                     Result.Status.EMPTY -> {
                         viewModel.emptyState()
-                        Toast.makeText(requireContext(), R.string.empty_data, Toast.LENGTH_LONG)
-                            .show()
+                        myToast = Toast.makeText(
+                            requireContext(),
+                            R.string.empty_data,
+                            Toast.LENGTH_SHORT
+                        )
+                        myToast.show()
                     }
                 }
             })
@@ -80,6 +91,11 @@ class CovidFragment : Fragment(R.layout.covid_layout), Injectable {
             )
         // I'd add an action to perform reload data
         snack.show()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        myToast.cancel()
     }
 
 

@@ -30,10 +30,7 @@ class CovidRepository @Inject constructor(private val service: AppService) : Api
                     }
                 }
             }
-
-
         }
-
     }
 
 }

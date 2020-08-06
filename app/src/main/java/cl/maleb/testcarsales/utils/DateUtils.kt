@@ -53,7 +53,7 @@ fun Context.showDatePickerDialog(listener: DatePickerDialog.OnDateSetListener) {
         listener,
         year,
         month,
-        day
+        day - 1
     )
 
     dpd.show()
