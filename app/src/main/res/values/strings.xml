@@ -10,4 +10,5 @@
     <string name="generic_no_connection_message">Estás desconectado. Comprueba tu conexión.</string>
     <string name="settings_text">Ajustes</string>
     <string name="try_again_text">Intentar de nuevo</string>
+    <string name="date_greater_than_today">La fecha no debe ser mayor o igual al día de hoy.</string>
 </resources>

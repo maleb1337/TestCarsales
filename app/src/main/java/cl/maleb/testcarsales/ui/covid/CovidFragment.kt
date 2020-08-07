@@ -14,10 +14,7 @@ import cl.maleb.testcarsales.data.Result
 import cl.maleb.testcarsales.databinding.CovidLayoutBinding
 import cl.maleb.testcarsales.di.Injectable
 import cl.maleb.testcarsales.di.injectViewModel
-import cl.maleb.testcarsales.utils.initDate
-import cl.maleb.testcarsales.utils.isNetworkAvailable
-import cl.maleb.testcarsales.utils.parseDateFromCalendar
-import cl.maleb.testcarsales.utils.showDatePickerDialog
+import cl.maleb.testcarsales.utils.*
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
@@ -39,8 +36,18 @@ class CovidFragment : Fragment(R.layout.covid_layout), Injectable {
             // dialog
             context?.showDatePickerDialog(
                 DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
-                    val dateSelected = parseDateFromCalendar(day, month, year)
-                    viewModel.fetchDate(dateSelected)
+                    if (isCurrentDate(year, month, day)) {
+                        myToast = Toast.makeText(
+                            requireContext(),
+                            R.string.date_greater_than_today,
+                            Toast.LENGTH_SHORT
+                        )
+                        myToast.show()
+                    } else {
+                        val dateSelected = parseDateFromCalendar(day, month, year)
+                        viewModel.fetchDate(dateSelected)
+                    }
+
                 }
             )
         }

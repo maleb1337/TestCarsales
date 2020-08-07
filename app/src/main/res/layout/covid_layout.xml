@@ -118,12 +118,12 @@
                     <TextView
                         android:id="@+id/tvConfirmedCases"
                         style="@style/textContent"
-                        android:text="@{@string/confirmed_cases + ' ' + String.valueOf(viewModel.covidData.confirmed)}" />
+                        android:text="@{@string/confirmed_cases + ' ' + viewModel.parseNumberToThousands(viewModel.covidData.confirmed)}" />
 
                     <TextView
                         android:id="@+id/tvPassedAway"
                         style="@style/textContent"
-                        android:text="@{@string/deaths + ' ' + String.valueOf(viewModel.covidData.deaths) }" />
+                        android:text="@{@string/deaths + ' ' + viewModel.parseNumberToThousands(viewModel.covidData.deaths) }" />
 
                 </LinearLayout>
 

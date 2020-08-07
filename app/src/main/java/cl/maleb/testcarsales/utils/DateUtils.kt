@@ -2,10 +2,7 @@ package cl.maleb.testcarsales.utils
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.os.Build
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 // Calendar variables
@@ -30,6 +27,20 @@ fun initDate(): String {
     dateString = formatter.format(calendar.time)
 
     return dateString
+}
+
+fun isCurrentDate(intYear: Int, intMonth: Int, intDay: Int): Boolean {
+    val dateToCompare = Calendar.getInstance()
+    dateToCompare.set(intYear, intMonth, intDay)
+
+    val currentDate = Calendar.getInstance()
+    currentDate.set(year, month, day)
+
+    if (formatter.format(dateToCompare.time) >= formatter.format(currentDate.time)) {
+        return true
+    }
+
+    return false
 }
 
 fun parseDateFromCalendar(dayOfMonth: Int, monthOfYear: Int, year: Int): String {

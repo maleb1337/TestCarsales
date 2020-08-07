@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import cl.maleb.testcarsales.data.Covid
 import cl.maleb.testcarsales.data.CovidRepository
 import cl.maleb.testcarsales.data.Result
+import java.text.NumberFormat
 import javax.inject.Inject
 
 class CovidViewModel @Inject constructor(private val covidRepository: CovidRepository) :
@@ -56,6 +57,10 @@ class CovidViewModel @Inject constructor(private val covidRepository: CovidRepos
 
     fun fetchDate(dateString: String) {
         dateLiveData.value = dateString
+    }
+
+    fun parseNumberToThousands(number: Int): String {
+        return NumberFormat.getIntegerInstance().format(number)
     }
 
 
