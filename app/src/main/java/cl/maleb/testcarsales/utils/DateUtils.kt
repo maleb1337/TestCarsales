@@ -24,15 +24,10 @@ fun initDate(): String {
     val currentYear = year
     var dateString = ""
 
+    val calendar = Calendar.getInstance()
+    calendar.set(currentYear, currentMonth, currentDay)
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val current = LocalDateTime.now().minusDays(1)
-        val formatter = DateTimeFormatter.ofPattern(pattern)
-        dateString = current.format(formatter)
-    } else {
-        val date = Date(currentYear, currentMonth, currentDay)
-        dateString = formatter.format(date)
-    }
+    dateString = formatter.format(calendar.time)
 
     return dateString
 }
