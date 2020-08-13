@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">test carsales</string>
+    <string name="app_name">test_carsales</string>
+    <string name="pick_a_date">Seleccione una fecha</string>
+    <string name="date">Fecha:</string>
+    <string name="confirmed_cases">Casos confirmados:</string>
+    <string name="deaths">Cantidad de personas fallecidas:</string>
+    <string name="data_error">Ha ocurrido un error, favor intenta nuevamente.</string>
+    <string name="empty_data">No hay información disponible a la fecha consultada.</string>
+    <string name="generic_error_title">Ha ocurrido un error</string>
+    <string name="generic_no_connection_message">Estás desconectado. Comprueba tu conexión.</string>
+    <string name="settings_text">Ajustes</string>
+    <string name="try_again_text">Intentar de nuevo</string>
+    <string name="date_greater_than_today">La fecha no debe ser mayor o igual al día de hoy.</string>
 </resources>
